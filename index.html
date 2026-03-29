@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="light-particles" aria-hidden="true"></div>
+
   <header class="topbar" id="inicio">
     <div class="brand">Árvore Genealógica da Família Damião</div>
     <nav>
@@ -53,7 +55,7 @@
 
           <button type="button" class="card card-lg deceased highlight" data-person="vicente-amelia">
             <span class="card-title">Vicente Damião e Amélia</span>
-            <span class="card-subtitle">1920-2005 / 1925-2010</span>
+            <span class="card-subtitle">Casal central</span>
           </button>
         </div>
 
@@ -98,6 +100,8 @@
 
   <div class="modal" id="person-modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-connector" aria-hidden="true"></div>
+      <button type="button" class="back-modal" id="back-modal">← Voltar</button>
       <button type="button" class="close-modal" id="close-modal" aria-label="Fechar popup">×</button>
       <h3 id="modal-title">Detalhes</h3>
       <p id="modal-subtitle"></p>
