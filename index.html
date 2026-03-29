@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Árvore Genealógica da Família Damião</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar" id="inicio">
+    <div class="brand">Árvore Genealógica da Família Damião</div>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#arvore">Membros</a>
+      <a href="#legado">Legado</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-overlay">
+        <p class="eyebrow">Bem-vindo à nossa história e legado</p>
+        <h1>Divino Damião (†) e Katarina (†)</h1>
+        <p class="hero-sub">
+          Clique nos membros para ver os detalhes da família. Vicente Damião (†) e Amélia (†)
+          são o casal central desta árvore.
+        </p>
+        <a class="hero-cta" href="#arvore">Explorar Árvore</a>
+      </div>
+    </section>
+
+    <section id="arvore" class="tree-section">
+      <div class="tree-headline">
+        <h2>Estrutura Familiar Interativa</h2>
+        <p>Todos os cards abaixo são clicáveis e abrem popups com detalhes.</p>
+      </div>
+
+      <div class="tree-diagram">
+        <div class="branch branch-top-left" aria-hidden="true"></div>
+        <div class="branch branch-top-right" aria-hidden="true"></div>
+        <div class="branch branch-mid" aria-hidden="true"></div>
+        <div class="branch branch-bottom" aria-hidden="true"></div>
+
+        <div class="main-line">
+          <button type="button" class="card card-lg deceased" data-person="divino-katarina">
+            <span class="card-title">Divino Damião e Katarina</span>
+            <span class="card-subtitle">Casal ancestral</span>
+          </button>
+
+          <button type="button" class="card card-lg deceased highlight" data-person="vicente-amelia">
+            <span class="card-title">Vicente Damião e Amélia</span>
+            <span class="card-subtitle">1920-2005 / 1925-2010</span>
+          </button>
+        </div>
+
+        <div class="siblings-wrap">
+          <article class="siblings-block">
+            <h3>Irmãos de Vicente (nomes pendentes)</h3>
+            <div class="small-grid" id="vicente-siblings"></div>
+          </article>
+
+          <article class="siblings-block">
+            <h3>Irmãos de Amélia (nomes pendentes)</h3>
+            <div class="small-grid" id="amelia-siblings"></div>
+          </article>
+        </div>
+
+        <h3 class="children-title">Filhos de Vicente e Amélia</h3>
+        <div class="children-grid" id="children-grid"></div>
+      </div>
+    </section>
+
+    <section id="legado" class="legacy-section">
+      <h2>Legado</h2>
+      <p>
+        Esta landing page foi montada para preservar a memória da Família Damião
+        de forma organizada, visual e interativa. Novos nomes podem ser adicionados
+        a qualquer momento, mantendo a árvore sempre atualizada.
+      </p>
+    </section>
+
+    <section id="contato" class="contact-section">
+      <h2>Contato da Família</h2>
+      <p>
+        Espaço reservado para incluir canais oficiais da família
+        (grupo, e-mail ou rede social).
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Família Damião | Raízes &amp; Conexões</p>
+  </footer>
+
+  <div class="modal" id="person-modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="close-modal" id="close-modal" aria-label="Fechar popup">×</button>
+      <h3 id="modal-title">Detalhes</h3>
+      <p id="modal-subtitle"></p>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
