@@ -385,18 +385,7 @@ footer > * {
   max-width: 1100px;
 }
 
-.siblings-wrap::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -30px;
-  transform: translateX(-50%);
-  width: min(75%, 760px);
-  height: 30px;
-  border: 3px solid rgba(143, 112, 71, 0.73);
-  border-top: none;
-  border-radius: 0 0 48px 48px;
-}
+
 
 .siblings-block {
   background: rgba(255, 248, 231, 0.84);
