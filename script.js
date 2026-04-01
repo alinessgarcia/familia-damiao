@@ -76,6 +76,11 @@ const registry = {
     title: "José Raimundo Cândido (†)",
     subtitle: "Irmão de Amélia",
     description: "José Raimundo Cândido era irmão de Amélia. Sobrenome Cândido em investigação — pode indicar origem materna ou batismo católico pós-abolição."
+  },
+  "manoel-santos": {
+    title: "Manoel dos Santos (†)",
+    subtitle: "Irmão de Amélia",
+    description: "Manoel dos Santos era irmão de Amélia. Já falecido — data de falecimento ainda não apurada."
   }
 };
 
@@ -109,7 +114,8 @@ function buildFamilyIndexes() {
 
 // Irmãos de Amélia já confirmados
 const ameliaNamedSiblings = [
-  { id: "jose-raimundo", label: "José Raimundo Cândido", sub: "Irmão confirmado" }
+  { id: "jose-raimundo", label: "José Raimundo Cândido", sub: "Irmão confirmado", deceased: true },
+  { id: "manoel-santos", label: "Manoel dos Santos",     sub: "Irmão confirmado", deceased: true  }
 ];
 
 // Irmãos de Vicente já confirmados
@@ -123,9 +129,10 @@ function createUnknownSiblingCards(container, sideLabel) {
   const cards = [];
 
   // Irmãos já confirmados
-  namedSiblings.forEach(({ id, label, sub }) => {
+  namedSiblings.forEach(({ id, label, sub, deceased }) => {
+    const decClass = deceased ? "deceased" : "";
     cards.push(`
-      <button type="button" class="card small-card deceased" data-person="${id}">
+      <button type="button" class="card small-card ${decClass}" data-person="${id}">
         <span class="card-title">${label}</span>
         <span class="card-subtitle">${sub}</span>
       </button>
