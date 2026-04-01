@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossiê Histórico | Família Damião</title>
+  <meta name="description" content="Dossiê histórico e genealógico da Família Damião — linhagem, territórios, evidências e hipóteses de investigação em Belo Horizonte e Minas Gerais.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Dossiê overrides ── */
+    .dossie-hero {
+      background: #1a1208;
+      padding: 48px 20px 36px;
+      text-align: center;
+      border-bottom: 2px solid rgba(182,143,58,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .dossie-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,208,100,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .dossie-hero h1 {
+      font-size: clamp(1.6rem,4vw,2.8rem);
+      color: #ffe0a4;
+      position: relative;
+    }
+    .dossie-hero p {
+      color: #e6d5b0;
+      max-width: 680px;
+      margin: 12px auto 0;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    /* ── Sections ── */
+    .dossie-section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    .dossie-section h2 {
+      font-family: 'Cinzel', serif;
+      color: #244f38;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      border-bottom: 2px solid rgba(143,112,71,0.3);
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+    }
+    .dossie-section h3 {
+      font-family: 'Cinzel', serif;
+      color: #4a3010;
+      font-size: 1.05rem;
+      margin: 24px 0 10px;
+    }
+    .dossie-section p {
+      line-height: 1.75;
+      margin: 0 0 14px;
+    }
+
+    /* ── Cards de info ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .info-card {
+      background: linear-gradient(145deg, #fff8e7, #f4ecda);
+      border: 1.5px solid rgba(143,112,71,0.45);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .info-card .label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6a4a1e;
+      margin-bottom: 6px;
+    }
+    .info-card .value {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2d2b26;
+    }
+    .info-card .sub {
+      font-size: 0.85rem;
+      color: #7a6040;
+      margin-top: 4px;
+    }
+
+    /* ── Badge de hipótese ── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .badge-hypo { background: #92400e; color: #fff; }
+    .badge-doc  { background: #1f4e6b; color: #fff; }
+    .badge-oral { background: #5b21b6; color: #fff; }
+
+    /* ── Mermaid wrapper ── */
+    .mermaid-box {
+      background: #0f1117;
+      border-radius: 14px;
+      padding: 20px;
+      margin: 24px 0;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .mermaid-box .mermaid {
+      min-width: min-content;
+    }
+    .mermaid-caption {
+      font-size: 0.82rem;
+      color: #7a6040;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+      border-left: 3px solid rgba(143,112,71,0.45);
+      margin: 20px 0;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -39px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #b68f3a;
+      border: 3px solid #fff8e7;
+      box-shadow: 0 0 0 2px rgba(182,143,58,0.4);
+    }
+    .tl-year {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: #6a4a1e;
+      font-size: 0.9rem;
+    }
+    .tl-desc {
+      margin: 4px 0 0;
+      color: #2d2b26;
+      line-height: 1.6;
+    }
+
+    /* ── Alert box ── */
+    .alert-box {
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 20px 0;
+      border-left: 4px solid;
+    }
+    .alert-box.evidence {
+      background: rgba(47,93,68,0.08);
+      border-color: #2f5d44;
+      color: #1e3d2e;
+    }
+    .alert-box.hypothesis {
+      background: rgba(146,64,14,0.08);
+      border-color: #92400e;
+      color: #6b2f06;
+    }
+    .alert-box.oral {
+      background: rgba(91,33,182,0.08);
+      border-color: #5b21b6;
+      color: #3b1475;
+    }
+    .alert-box strong {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(47,93,68,0.12);
+      border: 1.5px solid rgba(47,93,68,0.3);
+      border-radius: 999px;
+      color: #244f38;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 180ms;
+      font-family: 'Quicksand', sans-serif;
+    }
+    .back-btn:hover { background: rgba(47,93,68,0.22); }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .info-grid { grid-template-columns: 1fr 1fr; }
+      .mermaid-box { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="light-particles" aria-hidden="true"></div>
+
+  <header class="topbar" id="inicio">
+    <div class="brand">Família Damião — Dossiê Histórico</div>
+    <nav>
+      <a href="index.html">← Início</a>
+      <a href="#genealogia">Genealogia</a>
+      <a href="#territorio">Território</a>
+      <a href="#hipoteses">Hipóteses</a>
+      <a href="#linha-tempo">Linha do Tempo</a>
+    </nav>
+  </header>
+
+  <div class="dossie-hero">
+    <h1>Dossiê de Investigação</h1>
+    <p>
+      Evidências documentais, hipóteses históricas e memória oral sobre a origem e
+      territorialidade da Família Damião em Belo Horizonte e Minas Gerais.
+    </p>
+  </div>
+
+  <main>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- SEÇÃO 1: NÚCLEO FAMILIAR                    -->
+    <!-- ─────────────────────────────────────────── -->
+    <section class="dossie-section" id="genealogia">
+      <h2>1. Núcleo Familiar Identificado</h2>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="label">Patriarca</div>
+          <div class="value">Divino Cosme Damião</div>
+          <div class="sub">c. 1910 — origem investigada</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Matriarca</div>
+          <div class="value">Catarina Raimunda de Sena</div>
+          <div class="sub">Esposa de Divino — sobrenome "de Sena" em investigação</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Mãe de Divino</div>
+          <div class="value">Lamires</div>
+          <div class="sub">Memória oral familiar — dados documentais pendentes</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Origem paterna</div>
+          <div class="value">Bahia</div>
+          <div class="sub">Hipótese — pai desconhecido, origem BA (memória oral)</div>
+        </div>
+      </div>
+
+      <h3>Grafo Genealógico — Linhagem Principal</h3>
+      <div class="mermaid-box">
+        <div class="mermaid">
+graph TB
+    Lamires["Lamires<br/>(mãe de Divino)"]
+    PaiBA["Pai desconhecido<br/>(hipótese: origem Bahia)"]
+    Catarina["Catarina Raimunda de Sena<br/>(esposa de Divino)"]
+    Barao["Barão de Cocais<br/>(1792–1869)<br/>hipótese de conexão"]
+
+    Divino["Divino Cosme Damião<br/>c. 1910"]
+    Amelia["Amélia Cândida Damião<br/>(filha)"]
+    Vicente["Vicente Damião<br/>(filho)"]
+    Manoel["Manoel Damião<br/>(filho)"]
+
+    Vanda["Vanda Damião<br/>(filha de Amélia)"]
+    Sonia["Sônia Damião<br/>(filha de Amélia)"]
+    Lucimara["Lucimara Damião<br/>(filha de Manoel)"]
+
+    Lamires --> Divino
+    PaiBA --> Divino
+    Catarina --> Divino
+
+    Divino --> Amelia
+    Divino --> Vicente
+    Divino --> Manoel
+
+    Amelia --> Vanda
+    Amelia --> Sonia
+    Manoel --> Lucimara
+
+    Catarina -. "hipótese histórica" .-> Barao
+        </div>
+      </div>
+      <p class="mermaid-caption">
+        Grafo baseado em memória oral e documentos parcialmente verificados.
+        Linhas pontilhadas indicam hipóteses em investigação.
+      </p>
+    </section>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- SEÇÃO 2: TERRITÓRIO                         -->
+    <!-- ─────────────────────────────────────────── -->
+    <section class="dossie-section" id="territorio">
+      <h2>2. Territorialidade e Patrimônio</h2>
+
+      <p>
+        O núcleo patrimonial da família está concentrado na região do
+        <strong>Parque Nova Granada</strong>, com referências a imóveis nas ruas
+        <strong>Ubatuba</strong> e <strong>Cururipe</strong> e na
+        <strong>Avenida Barão Homem de Melo</strong>, no bairro Betânia, Belo Horizonte.
+      </p>
+
+      <div class="alert-box evidence">
+        <strong>📄 Evidência documental</strong>
+        Processo de desapropriação pela SUDECAP referente a imóveis associados ao espólio de
+        Divino Damião — ponto central da investigação fundiária.
+      </div>
+
+      <div class="alert-box hypothesis">
+        <strong>⚠️ Hipótese histórica</strong>
+        A Fazenda do Cercado — citada em estudos de urbanização de Belo Horizonte —
+        pode ter relação com a origem das terras onde a família se estabeleceu.
+        Esta ligação ainda não foi comprovada documentalmente.
+      </div>
+
+      <h3>Fluxo Histórico — Da Fazenda ao Patrimônio Familiar</h3>
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart LR
+    A["📜 Fazenda do Cercado<br/>citada em estudos sobre<br/>memória urbana de BH"]
+    B["👤 Antônio Cândido de Souza<br/>hipótese de ancestral materno"]
+    C["🕯️ Lamires<br/>memória oral familiar"]
+    D["⛏️ Barão de Cocais<br/>1792–1869<br/>hipótese de conexão histórica"]
+    E["👨‍👩‍👧 Divino Damião<br/>segunda geração identificada"]
+    F["🏠 Núcleo patrimonial<br/>Nova Granada · Rua Ubatuba · Rua Cururipe"]
+    G["⚖️ Processo SUDECAP<br/>desapropriação e espólio de Divino"]
+    H["📣 Editais e regularização fundiária<br/>hipótese: convocação de herdeiros"]
+    I["💬 Conversa familiar<br/>março 2026 — início da coleta de dados"]
+
+    A --> B --> C --> D --> E --> F --> G --> H --> I
+
+    classDef doc fill:#1f4e6b,color:#ffffff,stroke:#2a6a8a,stroke-width:2px
+    classDef oral fill:#5b21b6,color:#ffffff,stroke:#4c1d95,stroke-width:2px
+    classDef hypo fill:#92400e,color:#ffffff,stroke:#78350f,stroke-width:2px
+    classDef fam fill:#065f46,color:#ffffff,stroke:#047857,stroke-width:2px
+    classDef legal fill:#7c2d12,color:#ffffff,stroke:#9a3412,stroke-width:2px
+    classDef place fill:#0f766e,color:#ffffff,stroke:#115e59,stroke-width:2px
+
+    class A doc
+    class B hypo
+    class C oral
+    class D hypo
+    class E fam
+    class F place
+    class G legal
+    class H legal
+    class I oral
+        </div>
+      </div>
+      <p class="mermaid-caption">
+        Fluxo de hipóteses históricas e evidências documentais — da Fazenda do Cercado ao processo SUDECAP.
+      </p>
+    </section>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- SEÇÃO 3: HIPÓTESES                          -->
+    <!-- ─────────────────────────────────────────── -->
+    <section class="dossie-section" id="hipoteses">
+      <h2>3. Hipóteses de Investigação</h2>
+
+      <div class="alert-box oral">
+        <strong>🗣️ Memória oral</strong>
+        Nome "Lamires" identificado como mãe de Divino Damião através de relatos familiares.
+        Dados documentais sobre Lamires ainda não localizados.
+      </div>
+
+      <div class="alert-box hypothesis">
+        <strong>⚠️ Hipótese 1 — Sobrenome</strong>
+        "Catarina Raimunda de Sena" pode indicar descendência de família escravizada que
+        adotou sobrenome de santos católicos na pós-abolição — prática comum em Minas Gerais.
+        Conexão com "Barão de Cocais" é hipótese especulativa sem comprovação.
+      </div>
+
+      <div class="alert-box hypothesis">
+        <strong>⚠️ Hipótese 2 — Território</strong>
+        A Fazenda do Cercado, citada em fontes sobre a urbanização de Belo Horizonte,
+        pode ter sido fragmentada em lotes que compõem o atual Parque Nova Granada.
+        Se comprovado, localizaria a origem das terras da família.
+      </div>
+
+      <div class="alert-box evidence">
+        <strong>📄 Evidência 1 — SUDECAP</strong>
+        Processo de desapropriação pela SUDECAP (Superintendência de Desenvolvimento da Capital)
+        com referência ao espólio de Divino Damião — documento prioritário para localizar.
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- SEÇÃO 4: LINHA DO TEMPO                     -->
+    <!-- ─────────────────────────────────────────── -->
+    <section class="dossie-section" id="linha-tempo">
+      <h2>4. Linha do Tempo</h2>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">c. 1792–1869</div>
+          <div class="tl-desc">
+            Barão de Cocais — período histórico de mineração e formação de comunidades
+            em Barão de Cocais, MG. <span class="badge badge-hypo">hipótese</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Séc. XIX — pós-1888</div>
+          <div class="tl-desc">
+            Período de pós-abolição em Minas Gerais. Famílias ex-escravizadas adotam
+            sobrenomes e buscam regularização fundiária.
+            <span class="badge badge-hypo">contexto histórico</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">c. 1897</div>
+          <div class="tl-desc">
+            Fundação de Belo Horizonte. Demolição de Curral del Rei e início da
+            urbanização da região que incluirá o Parque Nova Granada.
+            <span class="badge badge-doc">fonte: MHAB</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">c. 1910</div>
+          <div class="tl-desc">
+            Nascimento estimado de Divino Cosme Damião.
+            <span class="badge badge-oral">memória oral</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Séc. XX — data não apurada</div>
+          <div class="tl-desc">
+            Estabelecimento da família Damião no Parque Nova Granada.
+            Imóveis nas ruas Ubatuba e Cururipe.
+            <span class="badge badge-oral">memória oral</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Data não apurada</div>
+          <div class="tl-desc">
+            Falecimento de Divino Cosme Damião. Abertura de inventário e espólio.
+            Processo SUDECAP de desapropriação.
+            <span class="badge badge-hypo">hipótese</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Março 2026</div>
+          <div class="tl-desc">
+            Início da coleta sistematizada de dados genealógicos e históricos.
+            Criação deste dossiê e do sistema de investigação.
+            <span class="badge badge-doc">documentado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- SEÇÃO 5: PRÓXIMOS PASSOS                    -->
+    <!-- ─────────────────────────────────────────── -->
+    <section class="dossie-section">
+      <h2>5. Próximos Passos da Investigação</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="label">Prioridade 1</div>
+          <div class="value">Localizar processo SUDECAP</div>
+          <div class="sub">Registro de desapropriação e espólio de Divino Damião</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Prioridade 2</div>
+          <div class="value">Acervo MHAB</div>
+          <div class="sub">Mapas e documentos sobre formação do Nova Granada</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Prioridade 3</div>
+          <div class="value">Cartório de Registro</div>
+          <div class="sub">Escrituras de imóveis nas ruas Ubatuba e Cururipe</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Prioridade 4</div>
+          <div class="value">Arquivo Público Mineiro</div>
+          <div class="sub">Registros de pós-abolição e registro civil em MG</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:32px;">
+        <a href="index.html" class="back-btn">← Voltar para a Árvore Genealógica</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Família Damião | Dossiê Histórico em Construção | Raízes &amp; Conexões</p>
+  </footer>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#1f4e6b',
+        primaryTextColor: '#ffffff',
+        primaryBorderColor: '#2a6a8a',
+        lineColor: '#b68f3a',
+        secondaryColor: '#065f46',
+        tertiaryColor: '#1a1208',
+        background: '#0f1117',
+        fontSize: '14px',
+      },
+      flowchart: { curve: 'basis', htmlLabels: true },
+      securityLevel: 'loose',
+    });
+
+    // Partículas de luz (reutilizado do index.html)
+    (function initLightParticles() {
+      const container = document.querySelector('.light-particles');
+      if (!container) return;
+      const docH = Math.max(document.body.scrollHeight, window.innerHeight);
+      const isMobile = window.innerWidth < 700;
+      const total = Math.min(160, (isMobile ? 40 : 70) + Math.floor(docH / 600) * 10);
+      container.style.height = docH + 'px';
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const p = document.createElement('span');
+        const size = (2 + Math.random() * 4).toFixed(2);
+        p.className = 'light-particle';
+        p.style.left = (Math.random() * 100).toFixed(2) + '%';
+        p.style.top  = (Math.random() * docH).toFixed(2) + 'px';
+        p.style.setProperty('--size', size + 'px');
+        p.style.setProperty('--duration', (7 + Math.random() * 10).toFixed(2) + 's');
+        p.style.setProperty('--delay',    (-Math.random() * 20).toFixed(2) + 's');
+        p.style.setProperty('--dx',       (-30 + Math.random() * 60).toFixed(2) + 'px');
+        p.style.setProperty('--dy',       (-40 + Math.random() * 80).toFixed(2) + 'px');
+        p.style.setProperty('--twinkle',  (1.3 + Math.random() * 2.5).toFixed(2) + 's');
+        frag.appendChild(p);
+      }
+      container.appendChild(frag);
+    })();
+  </script>
+
+</body>
+</html>

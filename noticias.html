@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notícias | Família Damião</title>
+  <meta name="description" content="Notícias, artigos e pesquisas relacionadas à história da Família Damião, genealogia em Minas Gerais, memória urbana de Belo Horizonte e patrimônio histórico.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── News page ── */
+    .news-hero {
+      background: #140e05;
+      padding: 40px 20px 28px;
+      text-align: center;
+      border-bottom: 2px solid rgba(182,143,58,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .news-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,200,80,0.14), transparent 55%);
+      pointer-events: none;
+    }
+    .news-hero h1 { color: #ffe0a4; font-size: clamp(1.5rem,3.5vw,2.5rem); position:relative; }
+    .news-hero p { color: #e0ceaa; max-width:600px; margin:10px auto 0; font-size:0.95rem; position:relative; }
+
+    /* ── Filtros ── */
+    .filter-bar {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(143,112,71,0.5);
+      background: #fff8e7;
+      color: #4a3010;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 160ms;
+      font-size: 0.88rem;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: #2f5d44;
+      color: #fff;
+      border-color: #2f5d44;
+    }
+    .filter-search {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(143,112,71,0.4);
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9rem;
+      background: #fff8e7;
+      color: #2d2b26;
+      outline: none;
+    }
+    .filter-search:focus { border-color: #2f5d44; }
+
+    /* ── Grid de notícias ── */
+    .news-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Card de notícia ── */
+    .news-card {
+      background: linear-gradient(145deg, #fff8e7, #f5edda);
+      border: 1.5px solid rgba(143,112,71,0.35);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 160ms, box-shadow 160ms;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(45,43,38,0.18);
+    }
+    .news-card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #1d3828, #2a5040);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+    }
+    .news-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .news-card-body {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .news-source {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #6a4a1e;
+      background: rgba(182,143,58,0.12);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+    }
+    .news-date {
+      font-size: 0.75rem;
+      color: #8a6840;
+      flex-shrink: 0;
+    }
+    .news-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.97rem;
+      color: #1e3d2e;
+      margin: 0 0 10px;
+      line-height: 1.45;
+    }
+    .news-card-summary {
+      font-size: 0.87rem;
+      color: #5a4a30;
+      line-height: 1.6;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .news-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 12px 0 8px;
+    }
+    .news-tag {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(47,93,68,0.1);
+      color: #244f38;
+      border: 1px solid rgba(47,93,68,0.2);
+    }
+    .news-read-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #2f5d44, #4a8060);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      transition: filter 160ms;
+      margin-top: 10px;
+    }
+    .news-read-btn:hover { filter: brightness(1.08); }
+
+    /* ── Score badge ── */
+    .score-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .score-high { background: #065f46; color: #fff; }
+    .score-med  { background: #92400e; color: #fff; }
+    .score-low  { background: #374151; color: #e5e7eb; }
+
+    /* ── Loading / Empty ── */
+    .news-status {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8a6840;
+      font-family: 'Cinzel', serif;
+    }
+    .news-status .emoji { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .news-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="light-particles" aria-hidden="true"></div>
+
+  <header class="topbar" id="inicio">
+    <div class="brand">Família Damião — Notícias</div>
+    <nav>
+      <a href="index.html">← Início</a>
+      <a href="dossie.html">Dossiê</a>
+      <a href="#inicio">Notícias</a>
+    </nav>
+  </header>
+
+  <div class="news-hero">
+    <h1>📰 Notícias & Pesquisas</h1>
+    <p>
+      Artigos, matérias e pesquisas relacionadas à história da família, genealogia em
+      Minas Gerais, memória negra e patrimônio histórico de Belo Horizonte.
+      Atualizado diariamente.
+    </p>
+  </div>
+
+  <div class="filter-bar">
+    <input
+      type="search"
+      class="filter-search"
+      id="news-search"
+      placeholder="Buscar notícias..."
+      aria-label="Buscar notícias"
+    >
+    <button class="filter-btn active" data-tag="all">Todos</button>
+    <button class="filter-btn" data-tag="genealogia">Genealogia</button>
+    <button class="filter-btn" data-tag="Belo Horizonte">Belo Horizonte</button>
+    <button class="filter-btn" data-tag="Minas Gerais">Minas Gerais</button>
+    <button class="filter-btn" data-tag="Damião">Família</button>
+  </div>
+
+  <div class="news-container">
+    <div class="news-grid" id="news-grid">
+      <div class="news-status">
+        <span class="emoji">⏳</span>
+        Carregando notícias...
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Família Damião | Notícias &amp; Pesquisas | Atualizado diariamente</p>
+  </footer>
+
+  <script>
+    // ── Configuração Supabase ──
+    const SUPABASE_URL = 'https://inmcvrhrrtgjmjadvvtg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWN2cmhycnRnam1qYWR2dnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTM0MDksImV4cCI6MjA5MDU4OTQwOX0.M3H_5X-qCmkMFqhBAIeePOYMsIgCdqiUwIQkiNiutAE';
+    const NEWS_TABLE = 'noticias';
+
+    let allNews = [];
+    let currentTag = 'all';
+    let searchQuery = '';
+
+    // ── Fetch notícias do Supabase ──
+    async function fetchNews() {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/${NEWS_TABLE}?order=score_relevancia.desc,coletado_em.desc&limit=60`,
+          {
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+            }
+          }
+        );
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      } catch (err) {
+        console.warn('Supabase não disponível:', err.message);
+        return [];
+      }
+    }
+
+    // ── Render cards ──
+    function renderNews(items) {
+      const grid = document.getElementById('news-grid');
+
+      if (!items.length) {
+        grid.innerHTML = `
+          <div class="news-status" style="grid-column:1/-1">
+            <span class="emoji">🔍</span>
+            Nenhuma notícia encontrada.<br>
+            <small style="font-family:Quicksand,sans-serif;font-size:0.85rem;color:#9a7a50">
+              O sistema coleta notícias 1x ao dia automaticamente.
+            </small>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(news => {
+        const tags = Array.isArray(news.tags)
+          ? news.tags
+          : (typeof news.tags === 'string' ? JSON.parse(news.tags || '[]') : []);
+
+        const score = parseFloat(news.score_relevancia || 0);
+        const scoreClass = score >= 60 ? 'score-high' : score >= 30 ? 'score-med' : 'score-low';
+        const scoreLabel = score >= 60 ? '🔥 Alta' : score >= 30 ? '⭐ Média' : '· Baixa';
+
+        const date = news.publicado_em
+          ? new Date(news.publicado_em).toLocaleDateString('pt-BR', {day:'2-digit',month:'short',year:'numeric'})
+          : '';
+
+        const imgHtml = news.imagem_url
+          ? `<div class="news-card-img"><img src="${escHtml(news.imagem_url)}" alt="${escHtml(news.titulo || '')}" loading="lazy" onerror="this.parentElement.innerHTML='📰'"></div>`
+          : `<div class="news-card-img">📰</div>`;
+
+        const tagHtml = tags.length
+          ? `<div class="news-card-tags">${tags.map(t => `<span class="news-tag">${escHtml(t)}</span>`).join('')}</div>`
+          : '';
+
+        return `
+          <article class="news-card" data-tags="${escHtml(JSON.stringify(tags))}" data-title="${escHtml((news.titulo||'').toLowerCase())}">
+            ${imgHtml}
+            <div class="news-card-body">
+              <div class="news-card-meta">
+                <span class="news-source">${escHtml(news.fonte || 'Fonte desconhecida')}</span>
+                <span class="news-date">${date}</span>
+              </div>
+              <h2 class="news-card-title">${escHtml(news.titulo || '')}</h2>
+              <p class="news-card-summary">${escHtml(news.resumo || '')}</p>
+              ${tagHtml}
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto">
+                <span class="score-badge ${scoreClass}">${scoreLabel}</span>
+                <a class="news-read-btn" href="${escHtml(news.url || '#')}" target="_blank" rel="noopener noreferrer">
+                  Ler matéria →
+                </a>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ── Filtragem ──
+    function applyFilters() {
+      let filtered = [...allNews];
+
+      if (currentTag !== 'all') {
+        filtered = filtered.filter(n => {
+          const tags = Array.isArray(n.tags) ? n.tags : JSON.parse(n.tags || '[]');
+          const text = (n.titulo + ' ' + n.resumo + ' ' + tags.join(' ')).toLowerCase();
+          return text.includes(currentTag.toLowerCase());
+        });
+      }
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(n => {
+          const text = (n.titulo + ' ' + n.resumo + ' ' + n.fonte).toLowerCase();
+          return text.includes(q);
+        });
+      }
+
+      renderNews(filtered);
+    }
+
+    // ── Demo local (quando Supabase não está disponível) ──
+    function getDemoNews() {
+      return [
+        {
+          id: 'demo-1',
+          titulo: 'Acervo do MHAB digitalizado: documentos históricos de Belo Horizonte disponíveis online',
+          url: 'https://prefeitura.pbh.gov.br/fundacao-municipal-de-cultura/museus/mhab',
+          fonte: 'Prefeitura de BH',
+          publicado_em: '2025-03-15',
+          resumo: 'O Museu Histórico Abílio Barreto lançou iniciativa de digitalização de seu acervo, incluindo documentos sobre a formação de Belo Horizonte e memória dos bairros históricos como Nova Granada e Curral del Rei.',
+          imagem_url: null,
+          tags: ['Belo Horizonte', 'MHAB', 'acervo', 'história'],
+          score_relevancia: 75,
+        },
+        {
+          id: 'demo-2',
+          titulo: 'Genealogia em Minas Gerais: como pesquisar ancestrais afrodescendentes no período pós-abolição',
+          url: 'https://geneal.com.br',
+          fonte: 'Genealogia & História',
+          publicado_em: '2025-02-20',
+          resumo: 'Guia completo para pesquisadores que buscam ancestrais afrodescendentes em Minas Gerais. Incluindo fontes documentais do Arquivo Público Mineiro, registros civis e cartoriais disponíveis para consulta.',
+          imagem_url: null,
+          tags: ['genealogia', 'Minas Gerais', 'pós-abolição'],
+          score_relevancia: 65,
+        },
+        {
+          id: 'demo-3',
+          titulo: 'Fazenda do Cercado: estudos revelam ocupação histórica do que é hoje Belo Horizonte',
+          url: 'https://www.em.com.br',
+          fonte: 'Estado de Minas',
+          publicado_em: '2024-11-10',
+          resumo: 'Pesquisadores da UFMG publicaram estudo sobre a Fazenda do Cercado, propriedade que ocupou parte do território onde Belo Horizonte foi construída. O estudo aponta conexões com famílias tradicionais da região.',
+          imagem_url: null,
+          tags: ['Fazenda do Cercado', 'Belo Horizonte', 'história'],
+          score_relevancia: 80,
+        },
+        {
+          id: 'demo-4',
+          titulo: 'Barão de Cocais: patrimônio histórico da mineração em Minas Gerais',
+          url: 'https://www.minasgerais.com.br',
+          fonte: 'Portal Minas Gerais',
+          publicado_em: '2024-09-05',
+          resumo: 'A cidade de Barão de Cocais guarda importantes registros históricos do ciclo do ouro em Minas Gerais. O museu e acervo locais documentam famílias e comunidades ligadas à mineração no século XIX.',
+          imagem_url: null,
+          tags: ['Barão de Cocais', 'Minas Gerais', 'mineração'],
+          score_relevancia: 55,
+        },
+        {
+          id: 'demo-5',
+          titulo: 'Memória negra em BH: projeto documenta famílias afrodescendentes nos bairros históricos',
+          url: 'https://bhaz.com.br',
+          fonte: 'BHaz',
+          publicado_em: '2025-01-18',
+          resumo: 'Projeto da Prefeitura de Belo Horizonte documenta a presença e contribuição das famílias afrodescendentes na formação dos bairros históricos da capital mineira.',
+          imagem_url: null,
+          tags: ['memória negra', 'Belo Horizonte', 'história'],
+          score_relevancia: 70,
+        },
+        {
+          id: 'demo-6',
+          titulo: 'SUDECAP: histórico de desapropriações e regularização fundiária em BH',
+          url: 'https://prefeitura.pbh.gov.br',
+          fonte: 'Prefeitura de BH',
+          publicado_em: '2024-07-30',
+          resumo: 'Levantamento sobre o histórico da SUDECAP (Superintendência de Desenvolvimento da Capital) e os processos de desapropriação que moldaram a estrutura fundiária de Belo Horizonte ao longo do século XX.',
+          imagem_url: null,
+          tags: ['SUDECAP', 'Belo Horizonte', 'patrimônio'],
+          score_relevancia: 60,
+        },
+      ];
+    }
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('news-grid');
+
+      // Busca do Supabase
+      let news = await fetchNews();
+
+      // Se não veio nada do Supabase, usa demo
+      if (!news.length) {
+        news = getDemoNews();
+        console.info('Usando notícias de demonstração (Supabase não disponível ou tabela vazia)');
+      }
+
+      allNews = news;
+      renderNews(allNews);
+
+      // Filtros por tag
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTag = btn.dataset.tag;
+          applyFilters();
+        });
+      });
+
+      // Busca
+      const searchInput = document.getElementById('news-search');
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value.trim();
+        applyFilters();
+      });
+    });
+
+    // Partículas
+    (function() {
+      const c = document.querySelector('.light-particles');
+      if (!c) return;
+      const h = Math.max(document.body.scrollHeight, window.innerHeight);
+      c.style.height = h + 'px';
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 80; i++) {
+        const p = document.createElement('span');
+        p.className = 'light-particle';
+        p.style.left = (Math.random()*100).toFixed(2)+'%';
+        p.style.top  = (Math.random()*h).toFixed(2)+'px';
+        p.style.setProperty('--size', (2+Math.random()*4).toFixed(2)+'px');
+        p.style.setProperty('--duration', (8+Math.random()*10).toFixed(2)+'s');
+        p.style.setProperty('--delay', (-Math.random()*18).toFixed(2)+'s');
+        p.style.setProperty('--dx', (-28+Math.random()*56).toFixed(2)+'px');
+        p.style.setProperty('--dy', (-36+Math.random()*72).toFixed(2)+'px');
+        p.style.setProperty('--twinkle', (1.5+Math.random()*2.5).toFixed(2)+'s');
+        frag.appendChild(p);
+      }
+      c.appendChild(frag);
+    })();
+  </script>
+
+</body>
+</html>
