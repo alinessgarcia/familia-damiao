@@ -62,8 +62,8 @@ const registry = {
     subtitle: "Bisavó — falecida em 1963",
     description: "Lamires é a geradora desta linhagem familiar. Pouco se sabe sobre sua vida até o momento — o nome foi preservado pela memória oral familiar. Faleceu em 1963."
   },
-  "divino-katarina": {
-    title: "Divino Damião (†) e Katarina (†)",
+  "divino-catarina": {
+    title: "Divino Damião (†) e Catarina (†)",
     subtitle: "Casal ancestral da família",
     description: "Ambos são falecidos e representam a origem principal desta árvore. Filhos de Lamires."
   },
