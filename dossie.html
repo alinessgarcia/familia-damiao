@@ -253,24 +253,24 @@
 
       <div class="info-grid">
         <div class="info-card">
-          <div class="label">Patriarca</div>
-          <div class="value">Divino Cosme Damião</div>
-          <div class="sub">c. 1910 — origem investigada</div>
-        </div>
-        <div class="info-card">
-          <div class="label">Matriarca</div>
-          <div class="value">Catarina Raimunda de Sena</div>
-          <div class="sub">Esposa de Divino — sobrenome "de Sena" em investigação</div>
-        </div>
-        <div class="info-card">
-          <div class="label">Mãe de Divino</div>
+          <div class="label">Bisavó (topo da árvore)</div>
           <div class="value">Lamires</div>
-          <div class="sub">Memória oral familiar — dados documentais pendentes</div>
+          <div class="sub">Falecida em 1963 — nome preservado pela memória oral</div>
         </div>
         <div class="info-card">
-          <div class="label">Origem paterna</div>
-          <div class="value">Bahia</div>
-          <div class="sub">Hipótese — pai desconhecido, origem BA (memória oral)</div>
+          <div class="label">Casal ancestral</div>
+          <div class="value">Divino Cosme Damião e Katarina</div>
+          <div class="sub">Filhos de Lamires — dados documentais em investigação</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Casal central</div>
+          <div class="value">Vicente Damião e Amélia</div>
+          <div class="sub">Seus filhos compõem a geração documentada na árvore</div>
+        </div>
+        <div class="info-card">
+          <div class="label">Irmão de Amélia (confirmado)</div>
+          <div class="value">José Raimundo Cândido</div>
+          <div class="sub">Sobrenome Cândido em investigação — possível origem materna</div>
         </div>
       </div>
 
@@ -278,33 +278,44 @@
       <div class="mermaid-box">
         <div class="mermaid">
 graph TB
-    Lamires["Lamires<br/>(mãe de Divino)"]
-    PaiBA["Pai desconhecido<br/>(hipótese: origem Bahia)"]
-    Catarina["Catarina Raimunda de Sena<br/>(esposa de Divino)"]
-    Barao["Barão de Cocais<br/>(1792–1869)<br/>hipótese de conexão"]
-
+    Lamires["Lamires &#40;† 1963&#41;<br/>Bisavó — topo da árvore"]
     Divino["Divino Cosme Damião<br/>c. 1910"]
-    Amelia["Amélia Cândida Damião<br/>(filha)"]
-    Vicente["Vicente Damião<br/>(filho)"]
-    Manoel["Manoel Damião<br/>(filho)"]
+    Katarina["Katarina<br/>Catal Ancestral"]
+    Vicente["Vicente Damião<br/>Casal central"]
+    Amelia["Amélia<br/>Casal central"]
+    JoseRaimundo["José Raimundo Cândido<br/>irmão de Amélia &#40;confirmado&#41;"]
 
-    Vanda["Vanda Damião<br/>(filha de Amélia)"]
-    Sonia["Sônia Damião<br/>(filha de Amélia)"]
-    Lucimara["Lucimara Damião<br/>(filha de Manoel)"]
+    Nilton["Nilton Damião"]
+    Samuel["Samuel Damião"]
+    Ezequiel["Ezequiel Damião"]
+    Marcos["Marcos Damião"]
+    Elias["Elias Damião &#40;†&#41;"]
+    Wilson["Wilson Damião &#40;†&#41;"]
+    Vanda["Vanda Damião"]
+    Marcia["Márcia Damião"]
+    Sonia["Sônia Damião"]
+    Sara["Sara Damião"]
+    Hilda["Hilda Damião &#40;†&#41;"]
+    Terezinha["Terezinha Cândida Damião &#40;†&#41;"]
 
     Lamires --> Divino
-    PaiBA --> Divino
-    Catarina --> Divino
-
-    Divino --> Amelia
+    Divino --- Katarina
     Divino --> Vicente
-    Divino --> Manoel
+    Vicente --- Amelia
+    Amelia -. irmão .-> JoseRaimundo
 
-    Amelia --> Vanda
-    Amelia --> Sonia
-    Manoel --> Lucimara
-
-    Catarina -. "hipótese histórica" .-> Barao
+    Vicente --> Nilton
+    Vicente --> Samuel
+    Vicente --> Ezequiel
+    Vicente --> Marcos
+    Vicente --> Elias
+    Vicente --> Wilson
+    Vicente --> Vanda
+    Vicente --> Marcia
+    Vicente --> Sonia
+    Vicente --> Sara
+    Vicente --> Hilda
+    Vicente --> Terezinha
         </div>
       </div>
       <p class="mermaid-caption">
@@ -457,6 +468,14 @@ flowchart LR
           </div>
         </div>
         <div class="tl-item">
+          <div class="tl-year">1963</div>
+          <div class="tl-desc">
+            Falecimento de <strong>Lamires</strong> — bisavó da família e topo identificado
+            desta linhagem. Marco mais antigo com data confirmada pela memória familiar.
+            <span class="badge badge-oral">memória oral confirmada</span>
+          </div>
+        </div>
+        <div class="tl-item">
           <div class="tl-year">Data não apurada</div>
           <div class="tl-desc">
             Falecimento de Divino Cosme Damião. Abertura de inventário e espólio.
@@ -473,6 +492,7 @@ flowchart LR
           </div>
         </div>
       </div>
+
     </section>
 
     <!-- ─────────────────────────────────────────── -->

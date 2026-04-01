@@ -205,6 +205,31 @@ footer > * {
   padding: 12px 0 0;
 }
 
+/* ── Lamires — topo da árvore ── */
+.root-ancestor {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.root-card {
+  min-width: 240px;
+  max-width: 340px;
+  background: linear-gradient(145deg, #f7ecce, #ecddb2) !important;
+  border-color: #8a5f28 !important;
+  box-shadow:
+    0 6px 18px rgba(45,43,38,0.18),
+    0 0 0 3px rgba(182,143,58,0.25);
+}
+
+.root-connector {
+  width: 4px;
+  height: 36px;
+  background: linear-gradient(180deg, rgba(143,112,71,0.85), rgba(143,112,71,0.55));
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
 .branch {
   position: absolute;
   border: 3px solid rgba(143, 112, 71, 0.78);

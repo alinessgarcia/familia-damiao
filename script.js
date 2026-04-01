@@ -57,15 +57,25 @@ const childFamilies = {
 };
 
 const registry = {
+  "lamires": {
+    title: "Lamires (†)",
+    subtitle: "Bisavó — falecida em 1963",
+    description: "Lamires é a geradora desta linhagem familiar. Pouco se sabe sobre sua vida até o momento — o nome foi preservado pela memória oral familiar. Faleceu em 1963."
+  },
   "divino-katarina": {
     title: "Divino Damião (†) e Katarina (†)",
     subtitle: "Casal ancestral da família",
-    description: "Ambos são falecidos e representam a origem principal desta árvore."
+    description: "Ambos são falecidos e representam a origem principal desta árvore. Filhos de Lamires."
   },
   "vicente-amelia": {
     title: "Vicente Damião (†) e Amélia (†)",
     subtitle: "Casal central desta linhagem",
     description: "Ambos são falecidos. Clique em cada filho para abrir os netos em elementos clicáveis."
+  },
+  "jose-raimundo": {
+    title: "José Raimundo Cândido (†)",
+    subtitle: "Irmão de Amélia",
+    description: "José Raimundo Cândido era irmão de Amélia. Sobrenome Cândido em investigação — pode indicar origem materna ou batismo católico pós-abolição."
   }
 };
 
@@ -97,23 +107,48 @@ function buildFamilyIndexes() {
   });
 }
 
+// Irmãos de Amélia já confirmados
+const ameliaNamedSiblings = [
+  { id: "jose-raimundo", label: "José Raimundo Cândido", sub: "Irmão confirmado" }
+];
+
+// Irmãos de Vicente já confirmados
+const vicenteNamedSiblings = [];
+
 function createUnknownSiblingCards(container, sideLabel) {
+  const isAmelia = sideLabel === "amelia";
+  const namedSiblings = isAmelia ? ameliaNamedSiblings : vicenteNamedSiblings;
+  const nameLabel = isAmelia ? "Amélia" : "Vicente";
+
   const cards = [];
-  for (let i = 1; i <= 10; i += 1) {
-    const id = `${sideLabel}-unknown-${i}`;
-    registry[id] = {
-      title: `Irmão(a) de ${sideLabel === "vicente" ? "Vicente" : "Amélia"} ${i}`,
+
+  // Irmãos já confirmados
+  namedSiblings.forEach(({ id, label, sub }) => {
+    cards.push(`
+      <button type="button" class="card small-card deceased" data-person="${id}">
+        <span class="card-title">${label}</span>
+        <span class="card-subtitle">${sub}</span>
+      </button>
+    `);
+  });
+
+  // Espaços para irmãos ainda não identificados
+  const totalUnknown = 10 - namedSiblings.length;
+  for (let i = 1; i <= totalUnknown; i += 1) {
+    const uid = `${sideLabel}-unknown-${i}`;
+    registry[uid] = {
+      title: `Irmão(a) de ${nameLabel} ${i}`,
       subtitle: "Nome pendente de confirmação",
       description: "Espaço reservado para preencher o nome futuramente."
     };
-
     cards.push(`
-      <button type="button" class="card small-card" data-person="${id}">
+      <button type="button" class="card small-card" data-person="${uid}">
         <span class="card-title">Irmão(a) [${i}]</span>
         <span class="card-subtitle">Desconhecido(a)</span>
       </button>
     `);
   }
+
   container.innerHTML = cards.join("");
 }
 
