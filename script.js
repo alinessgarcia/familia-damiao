@@ -59,13 +59,13 @@ const childFamilies = {
 const registry = {
   "lamires": {
     title: "Lamires (†)",
-    subtitle: "Bisavó — falecida em 1963",
-    description: "Lamires é a geradora desta linhagem familiar. Pouco se sabe sobre sua vida até o momento — o nome foi preservado pela memória oral familiar. Faleceu em 1963."
+    subtitle: "Trisavó — falecida em 1963",
+    description: "Lamires é a geradora desta linhagem familiar. Pouco se sabe sobre sua vida até o momento — o nome foi preservado pela memória oral familiar. Faleceu em 1963. Era trisavó dos netos de Vicente e Amélia."
   },
   "divino-catarina": {
     title: "Divino Damião (†) e Catarina (†)",
-    subtitle: "Casal ancestral da família",
-    description: "Ambos são falecidos e representam a origem principal desta árvore. Filhos de Lamires."
+    subtitle: "Bisavós — Casal ancestral da família",
+    description: "Ambos são falecidos e representam a origem principal desta árvore. Filhos de Lamires. São bisavós dos netos de Vicente e Amélia."
   },
   "vicente-amelia": {
     title: "Vicente Damião (†) e Amélia (†)",
@@ -131,10 +131,16 @@ function createUnknownSiblingCards(container, sideLabel) {
   // Irmãos já confirmados
   namedSiblings.forEach(({ id, label, sub, deceased }) => {
     const decClass = deceased ? "deceased" : "";
+    const seed = encodeURIComponent(label);
     cards.push(`
-      <button type="button" class="card small-card ${decClass}" data-person="${id}">
-        <span class="card-title">${label}</span>
-        <span class="card-subtitle">${sub}</span>
+      <button type="button" class="tree-node ${decClass} highlight rounded-full flex items-center p-2 pr-4 shadow-md cursor-pointer transition-transform hover:-translate-y-1" data-person="${id}">
+        <img class="w-9 h-9 rounded-full border border-gray-300 mr-2 object-cover"
+          src="https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=fde68a"
+          alt="${label}" loading="lazy">
+        <div class="text-left">
+          <h3 class="font-bold text-[#3e271a] text-xs">${label}${deceased ? ' †' : ''}</h3>
+          <p class="text-[10px] text-gray-500">${sub}</p>
+        </div>
       </button>
     `);
   });
@@ -149,9 +155,8 @@ function createUnknownSiblingCards(container, sideLabel) {
       description: "Espaço reservado para preencher o nome futuramente."
     };
     cards.push(`
-      <button type="button" class="card small-card" data-person="${uid}">
-        <span class="card-title">Irmão(a) [${i}]</span>
-        <span class="card-subtitle">Desconhecido(a)</span>
+      <button type="button" class="tree-node rounded-md px-4 py-2 text-sm font-semibold text-[#5c4326] cursor-pointer hover:opacity-80 transition-opacity" data-person="${uid}">
+        Irmão(a) [${i}]
       </button>
     `);
   }
@@ -160,14 +165,16 @@ function createUnknownSiblingCards(container, sideLabel) {
 }
 
 function renderChildrenCards() {
+  if (!childrenGrid) return;
   childrenGrid.innerHTML = descendants
     .map((person) => {
       const childrenCount = person.children.length;
-      const countLabel = childrenCount ? `${childrenCount} filho(s)` : "Sem filhos";
+      const countLabel = childrenCount ? `${childrenCount} filho(s)` : "Membro da família";
       const deceasedClass = person.deceased ? "deceased" : "";
+      const seed = encodeURIComponent(person.name);
 
       registry[person.id] = {
-        title: person.deceased ? `${person.name} (†)` : person.name,
+        title: person.deceased ? `${person.name} †` : person.name,
         subtitle: "Filho(a) de Vicente e Amélia",
         description: "Clique nos elementos abaixo para abrir o detalhe dos descendentes.",
         children: person.children,
@@ -179,9 +186,14 @@ function renderChildrenCards() {
       };
 
       return `
-        <button type="button" class="card child-card ${deceasedClass}" data-person="${person.id}">
-          <span class="card-title">${person.name}</span>
-          <span class="card-subtitle">${countLabel}</span>
+        <button type="button" class="tree-node ${deceasedClass} rounded-full flex items-center p-1.5 pr-4 shadow-sm hover:-translate-y-1 transition-transform cursor-pointer" data-person="${person.id}">
+          <img class="w-8 h-8 rounded-full border border-gray-300 mr-2 object-cover"
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=fde68a"
+            alt="${person.name}" loading="lazy">
+          <div class="text-left">
+            <h3 class="font-bold text-[#3e271a] text-xs">${person.name}${person.deceased ? ' †' : ''}</h3>
+            <p class="text-[9px] text-gray-500">${countLabel}</p>
+          </div>
         </button>
       `;
     })

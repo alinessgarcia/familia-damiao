@@ -1,143 +1,347 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Árvore Genealógica da Família Damião</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Família Damião: Raízes &amp; Legado</title>
+<meta name="description" content="Explore a história, conecte-se com ancestrais e preserve o legado da Família Damião.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-fonts-and-theme">
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #fdf8ea;
+  color: #3e271a
+}
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: "Cinzel", serif
+}
+.bg-parchment { background-color: #fdf8ea; }
+.hero-overlay {
+  background: rgba(80, 50, 20, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  padding: 3rem;
+}
+.glass-card { border-radius: 1rem; }
+.gold-gradient {
+  background: linear-gradient(to right, #b48a4c, #e5c381, #b48a4c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent
+}
+.gold-button {
+  background: linear-gradient(to bottom, #d4af37, #aa7c11);
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid #e5c381;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease
+}
+.gold-button:hover {
+  background: linear-gradient(to bottom, #e5c381, #d4af37);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4)
+}
+.tree-node {
+  background: linear-gradient(to bottom, #fffdf2, #f3e5b3);
+  border: 1px solid #d4af37;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #3e271a;
+}
+.tree-node.highlight {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  border-width: 2px;
+}
+.tree-node.dark {
+  background: linear-gradient(to bottom, #a37c3d, #6b4d29);
+  color: white;
+  border-color: #d4af37
+}
+.tree-node.deceased { opacity: 0.78; }
+.card-gradient {
+  background: linear-gradient(135deg, #6b4d29, #a37c3d, #4a3415);
+  color: white;
+  border: 1px solid #c8a97e
+}
+.footer-bg { background-color: #8c6733 }
+
+/* ── MODAL ── */
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(40,25,5,0.68);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s;
+}
+.modal.open { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: #fdf8ea; border-radius: 16px;
+  padding: 32px; max-width: 520px; width: 90%;
+  border: 1.5px solid #d4af37;
+  box-shadow: 0 32px 64px rgba(40,25,5,0.32);
+  position: relative; max-height: 85vh; overflow-y: auto;
+}
+.close-modal {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.3rem; color: #9a6e18; line-height: 1;
+}
+.back-modal {
+  background: none; border: none; cursor: pointer;
+  font-size: 0.82rem; color: #9a6e18; font-weight: 700;
+  padding: 4px 0; margin-bottom: 4px; display: block;
+}
+#modal-title { font-family: "Cinzel", serif; color: #3e271a; font-size: 1.15rem; margin: 10px 0 4px; }
+#modal-subtitle { color: #9a6e18; font-size: 0.85rem; margin-bottom: 12px; }
+#modal-content { color: #5c4326; font-size: 0.88rem; line-height: 1.7; }
+#modal-content h4 { font-family: "Cinzel", serif; font-size: 0.8rem; color: #7a5e3a; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 8px; }
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip {
+  background: none; border: 1px solid #d4af37;
+  border-radius: 999px; padding: 5px 14px; font-size: 0.8rem;
+  color: #5c4326; cursor: pointer; transition: all 0.15s;
+  font-family: "Inter", sans-serif;
+}
+.chip:hover { background: #d4af37; color: #fff; }
+.person-meta { margin: 10px 0; }
+.person-meta p { margin-bottom: 4px; }
+.map-link {
+  display: inline-block; margin-top: 8px; color: #9a6e18;
+  font-weight: 600; font-size: 0.82rem; text-decoration: underline;
+}
+.photo-trigger {
+  margin-top: 12px; background: none; border: 1px solid #d4af37;
+  border-radius: 999px; padding: 6px 18px; font-size: 0.82rem;
+  color: #7a5e3a; cursor: pointer; font-family: "Inter", sans-serif;
+}
+.photo-trigger:hover { background: #d4af37; color: #fff; }
+.photo-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.photo-card { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; }
+.photo-card img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 2px solid #d4af37; }
+.photo-card span { font-size: 0.7rem; color: #9a6e18; }
+.modal-list { padding-left: 18px; margin-top: 6px; }
+.modal-list li { margin-bottom: 4px; }
+
+/* light particles layer (compatibility) */
+.light-particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.light-particle {
+  position: absolute;
+  width: var(--size, 3px); height: var(--size, 3px);
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(212,175,55,0.75) 0%, transparent 70%);
+  animation:
+    floatParticle var(--duration, 9s) var(--delay, 0s) ease-in-out infinite alternate,
+    twinkleParticle var(--twinkle, 2s) var(--delay, 0s) ease-in-out infinite alternate;
+}
+@keyframes floatParticle {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(var(--dx, 20px), var(--dy, -30px)); }
+}
+@keyframes twinkleParticle {
+  from { opacity: 0.15; }
+  to   { opacity: 0.7; }
+}
+</style>
 </head>
-<body>
-  <div class="light-particles" aria-hidden="true"></div>
+<body class="antialiased">
 
-  <header class="topbar" id="inicio">
-    <div class="brand">Árvore Genealógica da Família Damião</div>
-    <nav>
-      <a href="#inicio">Início</a>
-      <a href="#arvore">Membros</a>
-      <a href="dossie.html">Dossiê</a>
-      <a href="noticias.html">Notícias</a>
-      <a href="#legado">Legado</a>
-      <a href="#contato">Contato</a>
-    </nav>
-  </header>
+<!-- Light particles -->
+<div class="light-particles" aria-hidden="true"></div>
 
-  <main>
-    <section class="hero">
-      <div class="hero-overlay">
-        <p class="eyebrow">Bem-vindo à nossa história e legado</p>
-        <h1>Divino Damião (†) e Catarina (†)</h1>
-        <p class="hero-sub">
-          Clique nos membros para ver os detalhes da família. Vicente Damião (†) e Amélia (†)
-          são o casal central desta árvore.
-        </p>
-        <a class="hero-cta" href="#arvore">Explorar Árvore</a>
-      </div>
-    </section>
+<!-- BEGIN: Navigation -->
+<nav class="absolute top-0 w-full z-50 py-6 px-4 md:px-8 flex justify-center">
+  <div class="flex space-x-6 md:space-x-12 text-white/90 font-medium text-sm md:text-base tracking-wider uppercase">
+    <a class="border border-white/40 rounded-full px-6 py-1 hover:bg-white/10 transition" href="#inicio">Início</a>
+    <a class="py-1 hover:text-white transition" href="#arvore">Membros</a>
+    <a class="py-1 hover:text-white transition" href="dossie.html">Dossiê</a>
+    <a class="py-1 hover:text-white transition" href="noticias.html">Notícias</a>
+    <a class="py-1 hover:text-white transition" href="#legado">Legado</a>
+    <a class="py-1 hover:text-white transition" href="#contato">Contato</a>
+  </div>
+</nav>
+<!-- END: Navigation -->
 
-    <section id="arvore" class="tree-section">
-      <div class="tree-headline">
-        <h2>Estrutura Familiar Interativa</h2>
-        <p>Todos os cards abaixo são clicáveis e abrem popups com detalhes.</p>
-      </div>
-
-      <div class="tree-diagram">
-
-        <!-- Raiz da árvore: Lamires -->
-        <div class="root-ancestor">
-          <button type="button" class="card card-lg deceased root-card" data-person="lamires">
-            <span class="card-title">Lamires</span>
-            <span class="card-subtitle">Bisavó — falecida em 1963</span>
-          </button>
-        </div>
-        <div class="root-connector" aria-hidden="true"></div>
-
-
-        <!-- Geração 1: Divino + Catarina -->
-        <div class="ancestor-line">
-          <button type="button" class="card card-lg deceased" data-person="divino-catarina">
-            <span class="card-title">Divino Damião e Catarina</span>
-            <span class="card-subtitle">Casal ancestral</span>
-          </button>
-        </div>
-        <div class="root-connector" aria-hidden="true"></div>
-
-        <!-- Geração 2: Vicente + Amélia -->
-        <div class="ancestor-line">
-          <button type="button" class="card card-lg deceased highlight" data-person="vicente-amelia">
-            <span class="card-title">Vicente Damião e Amélia</span>
-            <span class="card-subtitle">Casal central</span>
-          </button>
-        </div>
-
-        <div class="siblings-wrap">
-          <article class="siblings-block">
-            <h3>Irmãos de Vicente (nomes pendentes)</h3>
-            <div class="small-grid" id="vicente-siblings"></div>
-          </article>
-
-          <article class="siblings-block">
-            <h3>Irmãos de Amélia</h3>
-            <div class="small-grid" id="amelia-siblings"></div>
-          </article>
-        </div>
-
-        <h3 class="children-title">Filhos de Vicente e Amélia</h3>
-        <div class="children-grid" id="children-grid"></div>
-      </div>
-    </section>
-
-    <!-- ── CTA: Dossiê e Notícias ── -->
-    <section style="max-width:1100px;margin:20px auto 0;padding:0 15px;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-      <a href="dossie.html" style="display:block;text-decoration:none;background:linear-gradient(135deg,#1a3828,#2f5d44);border-radius:16px;padding:24px;border:1.5px solid rgba(182,143,58,0.4);transition:transform 160ms, box-shadow 160ms" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 14px 24px rgba(0,0,0,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="font-family:Cinzel,serif;font-size:1.5rem;margin-bottom:8px">📜</div>
-        <h3 style="font-family:Cinzel,serif;color:#ffe0a4;margin:0 0 8px;font-size:1.1rem">Dossiê Histórico</h3>
-        <p style="color:#c8dcc6;margin:0;font-size:0.9rem;line-height:1.5">Grafos genealógicos, linha do tempo, hipóteses históricas e evidências documentais sobre a Família Damião.</p>
-        <span style="display:inline-block;margin-top:14px;color:#ffd38e;font-weight:700;font-size:0.9rem">Explorar dossiê →</span>
-      </a>
-      <a href="noticias.html" style="display:block;text-decoration:none;background:linear-gradient(135deg,#1e1408,#3d2608);border-radius:16px;padding:24px;border:1.5px solid rgba(182,143,58,0.4);transition:transform 160ms, box-shadow 160ms" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 14px 24px rgba(0,0,0,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="font-family:Cinzel,serif;font-size:1.5rem;margin-bottom:8px">📰</div>
-        <h3 style="font-family:Cinzel,serif;color:#ffe0a4;margin:0 0 8px;font-size:1.1rem">Notícias & Pesquisas</h3>
-        <p style="color:#d4c4a0;margin:0;font-size:0.9rem;line-height:1.5">Artigos, matérias e pesquisas sobre genealogia, memória urbana de BH, história de MG e patrimônio histórico. Atualizado diariamente.</p>
-        <span style="display:inline-block;margin-top:14px;color:#ffd38e;font-weight:700;font-size:0.9rem">Ver notícias →</span>
-      </a>
-    </section>
-
-    <section id="legado" class="legacy-section">
-      <h2>Legado</h2>
-      <p>
-        Esta landing page foi montada para preservar a memória da Família Damião
-        de forma organizada, visual e interativa. Novos nomes podem ser adicionados
-        a qualquer momento, mantendo a árvore sempre atualizada.
+<!-- BEGIN: Hero Section -->
+<section id="inicio" class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbEvovPoY2dLiXWwnjvTJl7E4yp-qFf7xuUwxoqBxRmNq04bPz9rHsywk4R4oCCdWIZCVdZ0K8Iw2FhgOxb7tWOPGHVyRHeqjN5Lx2EySSaneCYQGqjdHSjNQY3n7VE5BHBjtUR6YEVFwCJbWgcgnuVjFUyAGhkCUGtqZBXlYB6pb0KLG4ZmrYXR35N_r6MOiTPKKREfDnrluO6Vh-ayAcF-DAPej-iUPsWKQDb25VBxkG7QGb5mRMmEAOIGEoDI8R5Uh-A7CLHdtl');"></div>
+  <div class="absolute inset-0 bg-black/30"></div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+    <div class="glass-card rounded-2xl p-8 md:p-16 hero-overlay">
+      <h1 class="font-serif text-4xl md:text-6xl font-bold mb-6 text-white uppercase tracking-widest" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+        Família Damião:<br/>
+        <span class="gold-gradient">Raízes &amp; Legado</span>
+      </h1>
+      <p class="text-white/90 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
+        Explore a história, conecte-se com os ancestrais e preserve o legado para as futuras gerações.
       </p>
-    </section>
-
-    <section id="contato" class="contact-section">
-      <h2>Contato da Família</h2>
-      <p>
-        Espaço reservado para incluir canais oficiais da família
-        (grupo, e-mail ou rede social).
-      </p>
-    </section>
-  </main>
-
-  <footer>
-    <p>Família Damião | Raízes &amp; Conexões</p>
-  </footer>
-
-  <div class="modal" id="person-modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <div class="modal-connector" aria-hidden="true"></div>
-      <button type="button" class="back-modal" id="back-modal">← Voltar</button>
-      <button type="button" class="close-modal" id="close-modal" aria-label="Fechar popup">×</button>
-      <h3 id="modal-title">Detalhes</h3>
-      <p id="modal-subtitle"></p>
-      <div id="modal-content"></div>
+      <a href="#arvore" class="gold-button rounded-full px-10 py-4 text-lg font-semibold uppercase tracking-wide inline-block" style="background: linear-gradient(180deg, #d4a34b, #966723)">
+        Explorar Árvore
+      </a>
     </div>
   </div>
+</section>
+<!-- END: Hero Section -->
 
-  <script src="script.js"></script>
+<!-- BEGIN: Interactive Family Tree Section -->
+<section id="arvore" class="py-20 bg-parchment relative">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <h2 class="font-serif text-3xl md:text-4xl text-[#7a5e3a] font-bold mb-4 uppercase tracking-widest mt-16">Estrutura Familiar Interativa</h2>
+    <p class="text-gray-700 max-w-3xl mx-auto mb-16 text-sm md:text-base">
+      Clique em qualquer membro para ver detalhes e descendentes.
+    </p>
+
+    <!-- Family Tree Container -->
+    <div class="relative flex flex-col items-center max-w-5xl mx-auto">
+
+      <!-- Node 1: Bisavó Lamires -->
+      <button type="button" data-person="lamires" class="tree-node dark highlight rounded-full flex items-center px-8 py-4 mb-8 w-max relative z-10 shadow-lg cursor-pointer transition-transform hover:-translate-y-1">
+        <img alt="Lamires" class="w-12 h-12 rounded-full border-2 border-[#d4af37] mr-4 object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Zk6S4x8vMnvyZZfBjbcdsKMgxuhZMVmoJuLZrQ0uMg5pHgQ_5FVQO8ksFcXl8tyODa5r02N6IxzjYkkZN_KbLsSQuX4LoDvIKlT7xHWR6Gy0q-K6pZUL--XYHrcXR5DWsh811bi8jqrpXExcpf9jvNkaWulhAXN8RMlB4tuBszy9JgknnR5Qae64VBXlTYnf5Ebg7Hyz2EDGlTfxy5-dZ7htlNi2vyd19Ziv4io8nf6OQGQzOKtL6l6PtXTOSWDSb43rH_t4wLcG"/>
+        <div class="text-left">
+          <h3 class="font-semibold text-sm">Lamires † | Trisavó — falecida em 1963</h3>
+        </div>
+      </button>
+
+      <!-- Vertical Line -->
+      <div class="w-px h-8 bg-[#5c4326] -mt-8 mb-4"></div>
+
+      <!-- Node 2: Casal Ancestral -->
+      <button type="button" data-person="divino-catarina" class="tree-node rounded-full flex items-center p-2 pr-8 mb-8 w-max relative z-10 cursor-pointer transition-transform hover:-translate-y-1">
+        <img alt="Divino e Catarina" class="w-10 h-10 rounded-full border border-gray-300 mr-3 object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjU_NW5Dw6EjuYvR5G1I54pL1gNBJ6j4dK9g1P1a2bDoDZ6_dZ0nmqLmecIV0wwrwrul-vItKrKFvUcjepjVM1XplvVPLdoyoE_Y5_PHTm47m5f58WzYa5-11LucvfHC5vKq2Q8mZ5i2ZGBzQusH5jdGFmWDlC0_vCEtCKIFo_LxpN9pQEKrfhbE66CDeNvacfgR9FaVOoYDhYEiOBAILhqlDb1VEFzeL13Faoe2QNnkn70ZPAJ95N3ejvcRu9G6x_-3bzG_c4gC8T"/>
+        <div class="text-left">
+          <h3 class="font-bold text-[#3e271a] text-sm">Divino Damião † e Catarina †</h3>
+          <p class="text-xs text-gray-500">Casal ancestral</p>
+        </div>
+      </button>
+
+      <!-- Vertical Line -->
+      <div class="w-px h-8 bg-[#5c4326] -mt-8 mb-4"></div>
+
+      <!-- Node 3: Casal Central -->
+      <button type="button" data-person="vicente-amelia" class="tree-node rounded-full flex items-center p-2 pr-8 mb-12 w-max relative z-10 cursor-pointer transition-transform hover:-translate-y-1">
+        <img alt="Vicente e Amélia" class="w-10 h-10 rounded-full border border-gray-300 mr-3 object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGv29OFV7StSlmp3r4D1EFJjcqLma5IIr2X47MaIKXt43sSEp1dw3VDOF_2AzeerbIl3Vl1ZDunEr74OwVxOk1DE6Ugf9EU1592OKBHIKztwi66jGhPXw4Mb8bRupjn574F1_j8uhbcALXYGPoRZAfV_AjPU7YQSNiON-tBs68BfqqxhbdteJGuOBQSzX-S4SGqdtgGh4-qUaJauGIc4lIKmBwoIO9mg7v4LTbRtQWdSjH8TALCSCjpKVsx-voofFSALkGmr4vqrlx"/>
+        <div class="text-left">
+          <h3 class="font-bold text-[#3e271a] text-sm">Vicente Damião † e Amélia †</h3>
+          <p class="text-xs text-gray-500">Casal central</p>
+        </div>
+      </button>
+
+      <!-- Branching Area: Siblings -->
+      <div class="w-full relative mb-16">
+        <div class="w-px h-8 bg-[#5c4326] -mt-8 mb-4 mx-auto"></div>
+        <div class="flex justify-between w-full pt-8 px-4">
+
+          <!-- Irmãos de Vicente -->
+          <div class="flex-1 flex flex-col items-center">
+            <h4 class="font-bold text-sm text-[#7a5e3a] mb-4 bg-parchment px-2 relative z-10 -mt-12">Irmãos de Vicente</h4>
+            <div id="vicente-siblings" class="flex flex-wrap justify-center gap-3"></div>
+          </div>
+
+          <!-- Irmãos de Amélia -->
+          <div class="flex-1 flex flex-col items-center">
+            <h4 class="font-bold text-sm text-[#7a5e3a] mb-4 bg-parchment px-2 relative z-10 -mt-12">Irmãos de Amélia</h4>
+            <div id="amelia-siblings" class="flex flex-wrap justify-center gap-3"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Children Grid -->
+      <div class="w-full flex flex-col items-center">
+        <h4 class="font-bold text-sm text-[#7a5e3a] mb-8 bg-parchment px-2 relative z-10">Filhos de Vicente e Amélia</h4>
+        <div id="children-grid" class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 w-full max-w-4xl"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: Interactive Family Tree Section -->
+
+<!-- BEGIN: Information Cards Section -->
+<section class="py-12 bg-parchment pb-24 border-b border-[#d4af37]/30">
+  <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+
+    <!-- Dossier Card -->
+    <div class="card-gradient rounded-xl p-8 shadow-xl relative overflow-hidden group">
+      <div class="w-12 h-12 mb-6 text-[#d4af37]">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg>
+      </div>
+      <h3 class="font-serif text-2xl font-bold mb-4 uppercase tracking-wide">Dossiê Histórico</h3>
+      <p class="text-sm text-white/80 mb-8 leading-relaxed font-light">
+        Registros genealógicos, hipóteses de investigação, evidências documentais e linha do tempo histórica da família.
+      </p>
+      <a href="dossie.html" class="bg-[#a67c4b] hover:bg-[#8b6536] text-white/90 text-sm font-semibold py-2 px-6 rounded-full transition-colors inline-flex items-center gap-2 border border-[#d4af37]/50">
+        Explorar dossiê <span>→</span>
+      </a>
+      <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all"></div>
+    </div>
+
+    <!-- News Card -->
+    <div class="card-gradient rounded-xl p-8 shadow-xl relative overflow-hidden group">
+      <div class="w-12 h-12 mb-6 text-[#d4af37]">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"></path></svg>
+      </div>
+      <h3 class="font-serif text-2xl font-bold mb-4 uppercase tracking-wide">Notícias &amp; Pesquisa</h3>
+      <p class="text-sm text-white/80 mb-8 leading-relaxed font-light">
+        Descobertas recentes, pesquisas históricas e artigos sobre genealogia e memória urbana de Belo Horizonte.
+      </p>
+      <a href="noticias.html" class="bg-[#a67c4b] hover:bg-[#8b6536] text-white/90 text-sm font-semibold py-2 px-6 rounded-full transition-colors inline-flex items-center gap-2 border border-[#d4af37]/50">
+        Ver notícias <span>→</span>
+      </a>
+      <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all"></div>
+    </div>
+
+  </div>
+</section>
+<!-- END: Information Cards Section -->
+
+<!-- BEGIN: Legacy Section -->
+<section id="legado" class="py-16 bg-[#fdf8ea]">
+  <div class="max-w-3xl mx-auto text-center px-4">
+    <h2 class="font-serif text-2xl md:text-3xl text-[#5c4326] font-bold mb-6 uppercase tracking-widest">Legado</h2>
+    <p class="text-gray-600 leading-relaxed">
+      Esta página foi criada para preservar a memória da Família Damião, honrando os nossos ancestrais e garantindo que as gerações futuras tenham acesso a documentos que mapeiam a nossa história familiar.
+    </p>
+  </div>
+</section>
+<!-- END: Legacy Section -->
+
+<!-- BEGIN: Footer -->
+<footer id="contato" class="footer-bg text-white/80 pt-12 pb-6 border-t-[8px] border-[#a67c52]">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h3 class="font-serif text-xl font-bold mb-6 uppercase tracking-wider text-white">Contato</h3>
+    <div class="flex justify-center gap-6 mb-12">
+      <a class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors" href="mailto:carloshg.designer@gmail.com" title="E-mail">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+      </a>
+      <a class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors" href="https://wa.me/5513988759647" title="WhatsApp" target="_blank">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.098.824z"></path></svg>
+      </a>
+      <a class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors" href="https://www.instagram.com/carlinhoguarujasp/" title="Instagram" target="_blank">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z"></path></svg>
+      </a>
+    </div>
+    <p class="text-sm font-light">© 2024 Família Damião | Raízes &amp; Conexões</p>
+  </div>
+</footer>
+<!-- END: Footer -->
+
+<!-- MODAL -->
+<div class="modal" id="person-modal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button type="button" class="back-modal" id="back-modal">← Voltar</button>
+    <button type="button" class="close-modal" id="close-modal" aria-label="Fechar">×</button>
+    <h3 id="modal-title"></h3>
+    <p id="modal-subtitle"></p>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
